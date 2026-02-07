@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>One Question</title>
+  <style>
+    :root{
+      --bg1:#fff1f6;
+      --bg2:#f3e8ff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --card:#ffffffcc;
+      --shadow: 0 20px 60px rgba(0,0,0,.12);
+      --accent:#ec4899;
+      --celebrate1:#0ea5e9;
+      --celebrate2:#a78bfa;
+      --celebrate3:#fb7185;
+      --celebrate4:#22c55e;
+    }
+
+    *{ box-sizing:border-box }
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--ink);
+      min-height:100svh;
+      background:
+        radial-gradient(1200px 600px at 20% 20%, var(--bg2), transparent 60%),
+        radial-gradient(1200px 600px at 80% 30%, var(--bg1), transparent 60%),
+        linear-gradient(135deg, #fff, #fff0f6);
+      overflow-x:hidden;
+      overflow-y:auto;
+      transition: filter .35s ease;
+    }
+
+    body.celebrate{
+      background:
+        radial-gradient(1000px 600px at 20% 20%, var(--celebrate2), transparent 60%),
+        radial-gradient(1000px 600px at 80% 30%, var(--celebrate3), transparent 60%),
+        radial-gradient(900px 700px at 50% 90%, var(--celebrate1), transparent 65%),
+        linear-gradient(135deg, var(--celebrate4), #fff);
+      animation: partyBg 2.6s ease-in-out infinite alternate;
+      filter: saturate(1.18) contrast(1.02);
+    }
+    @keyframes partyBg{
+      from{ background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+      to{ background-position: 20% 10%, -10% 20%, 10% -10%, 0% 0%; }
+    }
+
+    .wrap{
+      width:min(900px, 92vw);
+      padding:22px;
+      position:relative;
+      z-index:2;
+      margin: 18px auto 42px;
+    }
+
+    .card{
+      background:var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.7);
+      box-shadow: var(--shadow);
+      border-radius: 28px;
+      padding: 28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius: 999px;
+      background: #ffffffb3;
+      border:1px solid rgba(0,0,0,.06);
+      font-weight:700;
+      color: #374151;
+    }
+
+    h1{
+      margin: 18px 0 8px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+
+    p{
+      margin:0;
+      color: var(--muted);
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height:1.6;
+      max-width: 68ch;
+    }
+
+    .stage{
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: #ffffffb3;
+      border:1px solid rgba(0,0,0,.06);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .question{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .big{
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 900;
+      letter-spacing:-.01em;
+    }
+
+    .sub{
+      margin-top:6px;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius: 999px;
+      background: #fdf2f8;
+      border: 1px solid rgba(236,72,153,.22);
+      color: #9d174d;
+      font-weight:900;
+      font-size: 13px;
+      white-space:nowrap;
+    }
+
+    .btnRow{
+      margin-top: 16px;
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    button, a.btn{
+      border:0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .08s ease, filter .12s ease;
+      font-size: 15px;
+      user-select:none;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    button:active, a.btn:active{ transform: translateY(1px) scale(.99); }
+
+    .yes{
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color:white;
+      box-shadow: 0 12px 22px rgba(34,197,94,.22);
+    }
+
+    .no{
+      background: linear-gradient(135deg, #fb7185, #ef4444);
+      color:white;
+      box-shadow: 0 12px 22px rgba(239,68,68,.18);
+      position:relative;
+    }
+
+    .ghost{
+      background: #111827;
+      color:white;
+      opacity:.92;
+    }
+
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer{
+      margin-top: 16px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footer a{ color: var(--ink); text-decoration: none; font-weight:900; }
+
+    .modalBack{
+      position:fixed;
+      inset:0;
+      background: rgba(17,24,39,.45);
+      display:none;
+      place-items:center;
+      padding: 18px;
+      z-index: 80;
+    }
+    .modal{
+      width:min(560px, 92vw);
+      background: white;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .modal h2{ margin: 0 0 6px; font-size: 22px; }
+    .modal p{ margin: 0 0 14px; }
+
+    /* Hearts background */
+    .hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.7;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.10));
+      z-index: 1;
+    }
+    .heart{
+      position:absolute;
+      width:14px;
+      height:14px;
+      background:var(--accent);
+      transform: rotate(45deg);
+      border-radius:3px;
+      animation: floatUp linear forwards;
+    }
+    .heart:before,.heart:after{
+      content:"";
+      position:absolute;
+      width:14px;
+      height:14px;
+      background:var(--accent);
+      border-radius:50%;
+    }
+    .heart:before{ left:-7px; top:0; }
+    .heart:after{ top:-7px; left:0; }
+    @keyframes floatUp{
+      from{ transform: translateY(0) rotate(45deg); opacity:0; }
+      10%{opacity:1}
+      to{ transform: translateY(-110svh) rotate(45deg); opacity:0; }
+    }
+
+    /* Confetti */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      display:none;
+      z-index: 60;
+    }
+    .confetti span{
+      position:absolute;
+      width:10px;
+      height:14px;
+      border-radius: 3px;
+      background: var(--accent);
+      animation: conf linear forwards;
+    }
+    @keyframes conf{
+      from{ transform: translateY(-10svh) rotate(0deg); opacity:1; }
+      to{ transform: translateY(110svh) rotate(540deg); opacity:0; }
+    }
+
+    /* Photos */
+    #photoGrid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+    #photoGrid img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+    }
+
+    /* Bloom / unfurl effect */
+    .hidden{ display:none; }
+
+    .petals{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+      opacity:0;
+      transform: scale(.9);
+      z-index:0;
+    }
+    .petals span{
+      position:absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 60% 40% 60% 40%;
+      background: radial-gradient(circle at 30% 30%, rgba(236,72,153,.55), rgba(167,139,250,.28) 55%, rgba(255,255,255,0) 72%);
+      filter: blur(.2px);
+      transform: rotate(0deg) scale(.2);
+      opacity:0;
+    }
+    .petals span:nth-child(1){ transform: rotate(0deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(2){ transform: rotate(45deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(3){ transform: rotate(90deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(4){ transform: rotate(135deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(5){ transform: rotate(180deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(6){ transform: rotate(225deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(7){ transform: rotate(270deg) translateY(-135px) scale(.2); }
+    .petals span:nth-child(8){ transform: rotate(315deg) translateY(-135px) scale(.2); }
+
+    #card.unfurl .petals{ opacity:1; animation: petalsIn 950ms ease-out forwards; }
+    #card.unfurl .petals span{ animation: petalPop 950ms cubic-bezier(.2,.9,.2,1) forwards; }
+    #card.unfurl .petals span:nth-child(2){ animation-delay: 40ms; }
+    #card.unfurl .petals span:nth-child(3){ animation-delay: 80ms; }
+    #card.unfurl .petals span:nth-child(4){ animation-delay: 120ms; }
+    #card.unfurl .petals span:nth-child(5){ animation-delay: 160ms; }
+    #card.unfurl .petals span:nth-child(6){ animation-delay: 200ms; }
+    #card.unfurl .petals span:nth-child(7){ animation-delay: 240ms; }
+    #card.unfurl .petals span:nth-child(8){ animation-delay: 280ms; }
+
+    @keyframes petalsIn{ from{ transform: scale(.85); opacity:0; } to{ transform: scale(1); opacity:1; } }
+    @keyframes petalPop{ 0%{ opacity:0; filter: blur(2px); transform: scale(.15); } 55%{ opacity:1; filter: blur(0px); } 100%{ opacity:.95; filter: blur(0px); } }
+
+    #card.unfurl{ animation: cardBloom 900ms cubic-bezier(.2,.9,.2,1) forwards; }
+    @keyframes cardBloom{ from{ transform: scale(.98); } 55%{ transform: scale(1.01); } to{ transform: scale(1); } }
+
+    /* Timeline reorder UI */
+    .timelineItem{ width:100%; justify-content: space-between; cursor: grab; user-select: none; }
+    .timelineItem:active{ cursor: grabbing; }
+    .timelineItem.dragging{ opacity:.65; filter: saturate(1.1); }
+    .tBtns{ display:inline-flex; gap:6px; margin-left:8px; }
+    .tBtn{ border: 1px solid rgba(0,0,0,.08); background: #fff; color: #111827; font-weight: 900; border-radius: 10px; padding: 4px 8px; font-size: 12px; line-height: 1; cursor: pointer; }
+    .tBtn:active{ transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <main class="wrap">
+    <section class="card" aria-label="Valentine invite" id="card">
+      <div class="petals" aria-hidden="true" id="petals">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="top" style="position:relative; z-index:2">
+        <div class="badge"><b>Valentine</b> mini-site</div>
+        <div class="badge"><b>14 Feb</b> (or anytime you want)</div>
+      </div>
+
+      <div style="position:relative; z-index:2">
+        <h1 id="headline">Hey Gauri... I have a question for you...</h1>
+        <p id="lead">Do you want to know what it is?</p>
+
+        <div class="stage" aria-label="Intro" id="introStage" style="margin-top:18px">
+          <div class="question">
+            <div>
+              <div class="big">One question. One day. You + me.</div>
+              <div class="sub">Click Yes and watch this page bloom.</div>
+            </div>
+            <div class="pill">unfurl</div>
+          </div>
+          <div class="btnRow">
+            <button class="yes" id="introYesBtn">Yes</button>
+            <button class="no" id="introNoBtn">No</button>
+            <span class="hint">(You cannot actually say no.)</span>
+          </div>
+        </div>
+
+        <div id="mainContent" class="hidden">
+          <div class="stage" aria-label="Question">
+            <div class="question">
+              <div>
+                <div class="big" id="questionText">Gauri, will you be my Valentine?</div>
+                <div class="sub" id="subText">We will start with a playlist, and let the songs decide the rest.</div>
+              </div>
+              <div class="pill" id="pill">playlist ready</div>
+            </div>
+
+            <div class="btnRow">
+              <button class="yes" id="yesBtn">Yes</button>
+              <button class="no" id="noBtn">No</button>
+              <a class="btn ghost" id="playlistBtn" target="_blank" rel="noreferrer" style="display:none">Open playlist</a>
+              <span class="hint" id="hint">(Tip: the No button is mischievous.)</span>
+            </div>
+          </div>
+
+          <div class="stage" aria-label="Memories Quiz" style="margin-top:14px">
+            <div class="question">
+              <div>
+                <div class="big">A tiny memory quiz</div>
+                <div class="sub">Only one of us has a perfect score.</div>
+              </div>
+              <div class="pill">quiz</div>
+            </div>
+            <div id="quiz" style="margin-top:14px"></div>
+          </div>
+
+          <div class="stage" aria-label="Memory" style="margin-top:14px">
+            <div class="question">
+              <div>
+                <div class="big">Remember the time we used to sit at SH9?</div>
+                <div class="sub">The quiet sitting. The nothing-talks. The everything-feeling.</div>
+              </div>
+              <div class="pill">memory</div>
+            </div>
+          </div>
+
+          <div class="stage" aria-label="Choose our day" style="margin-top:14px">
+            <div class="question">
+              <div>
+                <div class="big">Choose our day (preference order)</div>
+                <div class="sub">Drag to reorder (or use Up/Down). Top item = top preference.</div>
+              </div>
+              <div class="pill">Delhi</div>
+            </div>
+            <ul id="timeline" style="margin-top:14px; display:grid; gap:10px; padding-left:0; list-style:none">
+              <li class="pill timelineItem" draggable="true" data-key="sunder">Sunder Nursery <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="khan">A meal in Khan <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="rage">A rage room in Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="movie">Snuggling and watching a movie <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="old">A historical walk in Old Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+            </ul>
+            <div class="hint" id="timelineHint" style="margin-top:10px">Tip: the first item is your top pick.</div>
+          </div>
+
+          <div class="stage" aria-label="Photos" style="margin-top:14px">
+            <div class="question" style="align-items:center">
+              <div>
+                <div class="big">A few photos</div>
+                <div class="sub">Just us. No uploads, no buttons.</div>
+              </div>
+              <div class="pill">photos</div>
+            </div>
+            <div id="photoGrid" aria-label="Our photos">
+              <img src="assets/gauri-01.jpg" alt="Gauri photo 1" loading="lazy" />
+              <img src="assets/gauri-02.jpg" alt="Gauri photo 2" loading="lazy" />
+              <img src="assets/gauri-03.jpg" alt="Gauri photo 3" loading="lazy" />
+              <img src="assets/gauri-04.jpg" alt="Gauri photo 4" loading="lazy" />
+              <img src="assets/gauri-05.jpg" alt="Gauri photo 5" loading="lazy" />
+            </div>
+          </div>
+
+          <div class="stage" aria-label="Secret Poem" style="margin-top:14px; display:none" id="poemStage">
+            <div class="question">
+              <div>
+                <div class="big">A poem for you, Gauri</div>
+                <div class="sub" style="color:#374151; font-weight:700">(Unlocked with Yes)</div>
+                <div class="sub" id="poemBlock" style="color:#111827; font-weight:650; white-space:pre-wrap; margin-top:10px"></div>
+              </div>
+              <div class="pill">secret</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <span>Made by you. Sent with courage.</span>
+            <span><a href="#" id="reset">Reset</a> · <a href="#" id="toggleHearts">Toggle hearts</a></span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Response">
+    <div class="modal">
+      <h2 id="modalTitle">Yay</h2>
+      <p id="modalBody">...</p>
+      <div class="btnRow" style="margin-top:10px">
+        <button class="yes" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Keep source ASCII-friendly. Malayalam is stored via unicode escapes.
+
+    var PLAYLIST_URL = 'https://open.spotify.com/playlist/6d6GAEhPJOff4i9zWHpgrM?si=OXsFqv2ZQUeNYNqqij1M_Q&pi=myRGPf4nTuOQI';
+
+    var POEM_ML = "\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40 \u0d35\u0d3f\u0d30\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n\u0d35\u0d38\u0d28\u0d4d\u0d24\u0d02 \u0d2a\u0d4b\u0d32\u0d41\u0d02 \u0d28\u0d3f\u0d36\u0d4d\u0d36\u0d2c\u0d4d\u0d26\u0d2e\u0d3e\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d41.\n\u0d28\u0d3f\u0d28\u0d4d\u0d31\u0d46 \u0d15\u0d23\u0d4d\u0d23\u0d41\u0d15\u0d33\u0d3f\u0d7d \u0d35\u0d46\u0d33\u0d3f\u0d1a\u0d4d\u0d1a\u0d02 \u0d24\u0d46\u0d33\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n\u0d0e\u0d7b \u0d39\u0d43\u0d26\u0d2f\u0d02 \u0d35\u0d34\u0d3f\u0d24\u0d46\u0d31\u0d4d\u0d31\u0d3e\u0d24\u0d46 \u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d3f\u0d32\u0d47\u0d15\u0d4d\u0d15\u0d46\u0d24\u0d4d\u0d24\u0d41\u0d28\u0d4d\u0d28\u0d41.\n\n\u0d1a\u0d41\u0d23\u0d4d\u0d21\u0d41\u0d15\u0d33\u0d41\u0d1f\u0d46 \u0d1a\u0d3f\u0d30\u0d3f\u0d2f\u0d3f\u0d7d \u0d24\u0d47\u0d7b \u0d24\u0d41\u0d33\u0d41\u0d2e\u0d4d\u0d2a\u0d41\u0d02,\n\u0d15\u0d23\u0d4d\u0d23\u0d3f\u0d2e\u0d3f\u0d34\u0d3f\u0d15\u0d33\u0d3f\u0d7d \u0d2e\u0d34\u0d2f\u0d41\u0d1f\u0d46 \u0d2e\u0d43\u0d26\u0d41\u0d24\u0d4d\u0d35\u0d02.\n\u0d28\u0d40 \u0d28\u0d1f\u0d28\u0d4d\u0d28\u0d41 \u0d2a\u0d4b\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d3f\u0d1f\u0d24\u0d4d\u0d24\u0d4d\n\u0d38\u0d4c\u0d28\u0d4d\u0d26\u0d30\u0d4d\u0d2f\u0d02 \u0d24\u0d28\u0d4d\u0d28\u0d46 \u0d35\u0d34\u0d3f\u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d4d \u0d35\u0d23\u0d19\u0d4d\u0d19\u0d41\u0d02.\n\n\u0d0e\u0d7b \u0d2a\u0d4d\u0d30\u0d3f\u0d2f\u0d2e\u0d47,\n\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40-\n\u0d0e\u0d7b\u0d31\u0d46 \u0d26\u0d3f\u0d35\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d28\u0d3f\u0d31\u0d35\u0d41\u0d02,\n\u0d0e\u0d7b \u0d36\u0d4d\u0d35\u0d3e\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d2a\u0d47\u0d30\u0d41\u0d02.";
+
+    var POEM_EN = "When you bloom like a red flower,\n" +
+      "even spring falls silent.\n" +
+      "When light awakens in your eyes,\n" +
+      "my heart finds its way to you without losing its path.\n\n" +
+      "Honey spills from the curve of your smile,\n" +
+      "rain-softness rests on your lashes.\n" +
+      "Wherever you walk,\n" +
+      "beauty itself pauses to bow.\n\n" +
+      "My love,\n" +
+      "you - like a red flower -\n" +
+      "are the colour of my days,\n" +
+      "and the name of my breath.";
+
+    function $(id){ return document.getElementById(id); }
+
+    function openModal(title, body){
+      $('modalTitle').textContent = title;
+      $('modalBody').textContent = body;
+      $('modalBack').style.display = 'grid';
+    }
+
+    function closeModal(){ $('modalBack').style.display = 'none'; }
+
+    function burstConfetti(){
+      var confetti = $('confetti');
+      confetti.innerHTML = '';
+      confetti.style.display = 'block';
+      var pieces = 120;
+      for(var i=0;i<pieces;i++){
+        var s = document.createElement('span');
+        s.style.left = (Math.random()*100) + 'vw';
+        s.style.top = (-10 - Math.random()*20) + 'svh';
+        s.style.animationDuration = (2.8 + Math.random()*2.4) + 's';
+        s.style.opacity = (0.6 + Math.random()*0.4).toFixed(2);
+        s.style.width = (6 + Math.random()*10) + 'px';
+        s.style.height = (8 + Math.random()*14) + 'px';
+        s.style.borderRadius = (2 + Math.random()*6) + 'px';
+        confetti.appendChild(s);
+      }
+      setTimeout(function(){ confetti.style.display = 'none'; confetti.innerHTML=''; }, 4200);
+    }
+
+    function tinyChime(){
+      try{
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        var ctx = new Ctx();
+        var o = ctx.createOscillator();
+        var g = ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.value = 660;
+        g.gain.value = 0.0001;
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.03);
+        o.frequency.exponentialRampToValueAtTime(990, ctx.currentTime + 0.12);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        o.stop(ctx.currentTime + 0.55);
+      }catch(e){ }
+    }
+
+    // Hearts
+    var hearts = $('hearts');
+    var heartsOn = true;
+    var heartTimer = null;
+
+    function spawnHeart(){
+      if(!heartsOn) return;
+      var h = document.createElement('div');
+      h.className = 'heart';
+      var left = Math.random()*100;
+      var size = 10 + Math.random()*14;
+      h.style.left = left + 'vw';
+      h.style.bottom = '-20px';
+      h.style.width = size + 'px';
+      h.style.height = size + 'px';
+      h.style.animationDuration = (4 + Math.random()*4) + 's';
+      h.style.opacity = (0.35 + Math.random()*0.55).toFixed(2);
+      hearts.appendChild(h);
+      setTimeout(function(){ if(h && h.parentNode) h.parentNode.removeChild(h); }, 9000);
+    }
+
+    function startHearts(){
+      if(heartTimer) clearInterval(heartTimer);
+      heartTimer = setInterval(spawnHeart, 220);
+    }
+
+    function initStatic(){
+      $('playlistBtn').href = PLAYLIST_URL;
+      // Hide playlist until she says Yes.
+      $('playlistBtn').style.display = 'none';
+
+      // Poem text (Malayalam + English translation)
+      $('poemBlock').textContent = POEM_ML + "\n\n--- English translation ---\n" + POEM_EN;
+    }
+
+    // Intro gate
+    var introYesBtn = $('introYesBtn');
+    var introNoBtn = $('introNoBtn');
+    var introStage = $('introStage');
+    var mainContent = $('mainContent');
+    var card = $('card');
+
+    function openMain(){
+      card.classList.add('unfurl');
+      mainContent.classList.remove('hidden');
+      $('lead').textContent = 'Okay - here it is.';
+      setTimeout(function(){
+        introStage.style.display = 'none';
+        var q = document.querySelector('[aria-label="Question"]');
+        if(q) q.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 520);
+    }
+
+    introYesBtn.addEventListener('click', openMain);
+    introNoBtn.addEventListener('mouseenter', function(){
+      introNoBtn.style.position = 'relative';
+      introNoBtn.style.transform = 'translate(' + (Math.random()*22-11).toFixed(0) + 'px, ' + (Math.random()*10-5).toFixed(0) + 'px)';
+    });
+    introNoBtn.addEventListener('click', function(){
+      openModal('Nice try', 'You cannot actually say no. Click Yes.');
+    });
+
+    $('toggleHearts').addEventListener('click', function(e){
+      e.preventDefault();
+      heartsOn = !heartsOn;
+      hearts.style.display = heartsOn ? 'block' : 'none';
+    });
+
+    $('closeModal').addEventListener('click', closeModal);
+    $('modalBack').addEventListener('click', function(e){ if(e.target === $('modalBack')) closeModal(); });
+
+    // No button dodges
+    var noBtn = $('noBtn');
+    var hint = $('hint');
+    var noPhrases = [
+      'Are you sure?',
+      'Wait - misclick?',
+      'That button is suspicious...',
+      'What if I bring dessert?',
+      'Final answer?',
+      'I will ask again nicely...',
+      'Plot twist: you meant YES',
+      'I respect your choice (but I will try again)'
+    ];
+    var noCount = 0;
+
+    function dodgeNo(){
+      var stage = document.querySelector('[aria-label="Question"]');
+      var rect = stage.getBoundingClientRect();
+      var btnRect = noBtn.getBoundingClientRect();
+      var padding = 12;
+      var maxX = rect.width - btnRect.width - padding;
+      var maxY = rect.height - btnRect.height - padding;
+      var x = Math.max(padding, Math.random()*Math.max(10, maxX));
+      var y = Math.max(padding, Math.random()*Math.max(10, maxY));
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+
+      noCount++;
+      noBtn.textContent = noPhrases[Math.min(noCount, noPhrases.length-1)];
+      hint.textContent = noCount < 2 ? '(Tip: the No button is mischievous.)' : '(Okay, you can stop trying.)';
+    }
+
+    noBtn.addEventListener('mouseenter', dodgeNo);
+    noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodgeNo(); }, {passive:false});
+    noBtn.addEventListener('click', function(){
+      openModal('Aww', 'No worries. I am still grateful I got to ask.');
+    });
+
+    // Yes celebration + poem unlock + show playlist button
+    $('yesBtn').addEventListener('click', function(){
+      document.body.classList.add('celebrate');
+      burstConfetti();
+      tinyChime();
+
+      // Reveal playlist button only after Yes
+      $('playlistBtn').style.display = 'inline-flex';
+
+      var poemStage = $('poemStage');
+      poemStage.style.display = 'block';
+      poemStage.scrollIntoView({behavior:'smooth', block:'center'});
+
+      openModal('YAY!!', 'It is a date. Playlist is unlocked - click Open playlist.');
+    });
+
+    // Quiz
+    var quizData = [
+      { q: 'The first time we kissed', options: ['The flagpole area', 'Right outside the gym', 'In acad block'], answer: 0 },
+      { q: 'The first time you told me you loved me', options: ['the flagpole area', 'Right outside the gym', 'In acad block'], answer: 1 }
+    ];
+
+    var quizEl = $('quiz');
+    var qi = 0;
+
+    function renderQuiz(){
+      if(qi >= quizData.length){
+        quizEl.innerHTML = '<div class="pill">Perfect score, obviously.</div>';
+        return;
+      }
+
+      var item = quizData[qi];
+      quizEl.innerHTML = '';
+
+      var q = document.createElement('div');
+      q.className = 'big';
+      q.textContent = item.q;
+      quizEl.appendChild(q);
+
+      for(var i=0;i<item.options.length;i++){
+        (function(opt, idx){
+          var b = document.createElement('button');
+          b.className = 'ghost';
+          b.style.marginTop = '10px';
+          b.textContent = opt;
+          b.addEventListener('click', function(){
+            if(idx === item.answer){
+              burstConfetti();
+              qi += 1;
+              renderQuiz();
+            } else {
+              b.textContent = 'Try again';
+            }
+          });
+          quizEl.appendChild(b);
+        })(item.options[i], i);
+      }
+    }
+
+    // Photos are embedded (no upload UI).
+
+    // Timeline preference (drag + buttons) (drag + buttons)
+    var timeline = $('timeline');
+    var draggingEl = null;
+
+    function getTimelineOrder(){
+      var items = timeline.querySelectorAll('.timelineItem');
+      var out = [];
+      for(var i=0;i<items.length;i++) out.push(items[i].getAttribute('data-key'));
+      return out;
+    }
+
+    function persistTimelineOrder(){
+      try{ localStorage.setItem('valentine_timeline_order', JSON.stringify(getTimelineOrder())); }catch(e){}
+    }
+
+    function applySavedTimelineOrder(){
+      var saved = null;
+      try{ saved = JSON.parse(localStorage.getItem('valentine_timeline_order') || 'null'); }catch(e){ saved = null; }
+      if(!saved || !saved.length) return;
+
+      var map = {};
+      var children = timeline.children;
+      for(var i=0;i<children.length;i++) map[children[i].getAttribute('data-key')] = children[i];
+
+      var frag = document.createDocumentFragment();
+      for(var j=0;j<saved.length;j++){
+        if(map[saved[j]]) frag.appendChild(map[saved[j]]);
+      }
+      var kids = Array.prototype.slice.call(timeline.children);
+      for(var k=0;k<kids.length;k++){
+        var key = kids[k].getAttribute('data-key');
+        if(saved.indexOf(key) === -1) frag.appendChild(kids[k]);
+      }
+      timeline.appendChild(frag);
+    }
+
+    function moveItem(li, dir){
+      var sib = dir === 'up' ? li.previousElementSibling : li.nextElementSibling;
+      if(!sib) return;
+      if(dir === 'up') timeline.insertBefore(li, sib);
+      else timeline.insertBefore(sib, li);
+      persistTimelineOrder();
+    }
+
+    timeline.addEventListener('click', function(e){
+      var t = e.target;
+      if(!t || !t.classList || !t.classList.contains('tBtn')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var li = t;
+      while(li && li.classList && !li.classList.contains('timelineItem')) li = li.parentNode;
+      if(!li) return;
+      moveItem(li, t.getAttribute('data-dir'));
+    });
+
+    timeline.addEventListener('dragstart', function(e){
+      var li = e.target;
+      while(li && li.classList && !li.classList.contains('timelineItem')) li = li.parentNode;
+      if(!li) return;
+      draggingEl = li;
+      li.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', li.getAttribute('data-key') || '');
+    });
+
+    timeline.addEventListener('dragend', function(){
+      if(draggingEl) draggingEl.classList.remove('dragging');
+      draggingEl = null;
+      persistTimelineOrder();
+    });
+
+    timeline.addEventListener('dragover', function(e){
+      e.preventDefault();
+      if(!draggingEl) return;
+      var after = getDragAfterElement(timeline, e.clientY);
+      if(after == null) timeline.appendChild(draggingEl);
+      else timeline.insertBefore(draggingEl, after);
+    });
+
+    function getDragAfterElement(container, y){
+      var els = container.querySelectorAll('.timelineItem');
+      var closest = { offset: -Infinity, element: null };
+      for(var i=0;i<els.length;i++){
+        var child = els[i];
+        if(child === draggingEl) continue;
+        var box = child.getBoundingClientRect();
+        var offset = y - box.top - box.height / 2;
+        if(offset < 0 && offset > closest.offset){
+          closest = { offset: offset, element: child };
+        }
+      }
+      return closest.element;
+    }
+
+    // Reset
+    $('reset').addEventListener('click', function(e){
+      e.preventDefault();
+
+      $('poemStage').style.display = 'none';
+      document.body.classList.remove('celebrate');
+
+      $('playlistBtn').style.display = 'none';
+
+      noBtn.style.position = 'relative';
+      noBtn.style.left = 'auto';
+      noBtn.style.top = 'auto';
+      noBtn.textContent = 'No';
+      noCount = 0;
+      hint.textContent = '(Tip: the No button is mischievous.)';
+
+      // Photo grid is static; nothing to reset here.
+
+      qi = 0;
+      renderQuiz();
+
+      try{ localStorage.removeItem('valentine_timeline_order'); }catch(err){}
+
+      introStage.style.display = 'block';
+      mainContent.classList.add('hidden');
+      card.classList.remove('unfurl');
+
+      $('headline').textContent = 'Hey Gauri... I have a question for you...';
+      $('lead').textContent = 'Do you want to know what it is?';
+
+      initStatic();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    // Minimal tests
+    function assert(cond, msg){ if(!cond) throw new Error('Test failed: ' + msg); }
+
+    function runTests(){
+      assert(typeof PLAYLIST_URL === 'string' && PLAYLIST_URL.indexOf('https://') === 0, 'playlist URL is set');
+      assert(!!$('introYesBtn'), 'introYesBtn exists');
+      assert(!!$('introStage'), 'introStage exists');
+      assert(!!$('mainContent'), 'mainContent exists');
+      assert(!!$('yesBtn'), 'valentine yesBtn exists');
+      assert(!!$('noBtn'), 'valentine noBtn exists');
+      assert(!!$('quiz'), 'quiz container exists');
+      assert(Array.isArray(quizData) && quizData.length === 2, 'quiz has 2 questions');
+      assert(quizData[0].answer === 0, 'quiz Q1 correct answer index');
+      assert(quizData[1].answer === 1, 'quiz Q2 correct answer index');
+      assert(!!$('card'), 'card exists');
+      assert(mainContent.classList.contains('hidden'), 'mainContent starts hidden');
+      assert(!!$('timeline'), 'timeline exists');
+      assert($('timeline').querySelectorAll('.timelineItem').length === 5, 'timeline has 5 items');
+      assert(!!$('playlistBtn') && $('playlistBtn').getAttribute('href') !== '', 'playlist button has href');
+      assert($('playlistBtn').style.display === 'none', 'playlist button starts hidden');
+      assert(typeof POEM_ML === 'string' && POEM_ML.length > 20, 'Malayalam poem is present');
+      assert(typeof POEM_EN === 'string' && POEM_EN.indexOf('red flower') !== -1, 'English translation is present');
+      assert($('photoGrid').querySelectorAll('img').length === 5, 'photo grid has 5 images');
+      console.log('Basic tests passed');
+    }
+
+    // Boot
+    startHearts();
+    mainContent.classList.add('hidden');
+    applySavedTimelineOrder();
+    renderQuiz();
+    initStatic();
+    runTests();
+  </script>
+</body>
+</html>
