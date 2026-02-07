@@ -282,22 +282,6 @@
       to{ transform: translateY(110svh) rotate(540deg); opacity:0; }
     }
 
-    /* Photos */
-    #photoGrid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap:10px;
-      margin-top:14px;
-    }
-    #photoGrid img{
-      width:100%;
-      height:160px;
-      object-fit:cover;
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 10px 22px rgba(0,0,0,.08);
-    }
-
     /* Bloom / unfurl effect */
     .hidden{ display:none; }
 
@@ -384,8 +368,8 @@
             <div class="pill">unfurl</div>
           </div>
           <div class="btnRow">
-            <button class="yes" id="introYesBtn">Yes</button>
-            <button class="no" id="introNoBtn">No</button>
+            <button class="yes" id="introYesBtn" type="button">Yes</button>
+            <button class="no" id="introNoBtn" type="button">No</button>
             <span class="hint">(You cannot actually say no.)</span>
           </div>
         </div>
@@ -401,10 +385,17 @@
             </div>
 
             <div class="btnRow">
-              <button class="yes" id="yesBtn">Yes</button>
-              <button class="no" id="noBtn">No</button>
+              <button class="yes" id="yesBtn" type="button">Yes</button>
+              <button class="no" id="noBtn" type="button">No</button>
               <a class="btn ghost" id="playlistBtn" target="_blank" rel="noreferrer" style="display:none">Open playlist</a>
               <span class="hint" id="hint">(Tip: the No button is mischievous.)</span>
+            </div>
+
+            <!-- After-Yes tools: (2) soft music + (2) time since yes -->
+            <div id="afterYesTools" class="btnRow" style="display:none; margin-top:10px">
+              <div class="pill" id="timeSinceYes">Time since yes: 00:00:00</div>
+              <button class="ghost" id="musicToggle" type="button">Play something soft</button>
+              <span class="hint">(Music is optional. No autoplay.)</span>
             </div>
           </div>
 
@@ -438,30 +429,20 @@
               <div class="pill">Delhi</div>
             </div>
             <ul id="timeline" style="margin-top:14px; display:grid; gap:10px; padding-left:0; list-style:none">
-              <li class="pill timelineItem" draggable="true" data-key="sunder">Sunder Nursery <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
-              <li class="pill timelineItem" draggable="true" data-key="khan">A meal in Khan <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
-              <li class="pill timelineItem" draggable="true" data-key="rage">A rage room in Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
-              <li class="pill timelineItem" draggable="true" data-key="movie">Snuggling and watching a movie <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
-              <li class="pill timelineItem" draggable="true" data-key="old">A historical walk in Old Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up">Up</button><button class="tBtn" data-dir="down" aria-label="Move down">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="sunder">Sunder Nursery <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up" type="button">Up</button><button class="tBtn" data-dir="down" aria-label="Move down" type="button">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="khan">A meal in Khan <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up" type="button">Up</button><button class="tBtn" data-dir="down" aria-label="Move down" type="button">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="rage">A rage room in Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up" type="button">Up</button><button class="tBtn" data-dir="down" aria-label="Move down" type="button">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="movie">Snuggling and watching a movie <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up" type="button">Up</button><button class="tBtn" data-dir="down" aria-label="Move down" type="button">Down</button></span></li>
+              <li class="pill timelineItem" draggable="true" data-key="old">A historical walk in Old Delhi <span class="tBtns"><button class="tBtn" data-dir="up" aria-label="Move up" type="button">Up</button><button class="tBtn" data-dir="down" aria-label="Move down" type="button">Down</button></span></li>
             </ul>
-            <div class="hint" id="timelineHint" style="margin-top:10px">Tip: the first item is your top pick.</div>
-          </div>
 
-          <div class="stage" aria-label="Photos" style="margin-top:14px">
-            <div class="question" style="align-items:center">
-              <div>
-                <div class="big">A few photos</div>
-                <div class="sub">Just us. No uploads, no buttons.</div>
-              </div>
-              <div class="pill">photos</div>
+            <!-- (6) Lock plan button -->
+            <div class="btnRow" style="margin-top:10px">
+              <button class="ghost" id="lockPlanBtn" type="button">Lock this plan 💌</button>
+              <span class="hint" id="lockPlanHint">(This only saves in this browser.)</span>
             </div>
-            <div id="photoGrid" aria-label="Our photos">
-              <img src="assets/gauri-01.jpg" alt="Gauri photo 1" loading="lazy" />
-              <img src="assets/gauri-02.jpg" alt="Gauri photo 2" loading="lazy" />
-              <img src="assets/gauri-03.jpg" alt="Gauri photo 3" loading="lazy" />
-              <img src="assets/gauri-04.jpg" alt="Gauri photo 4" loading="lazy" />
-              <img src="assets/gauri-05.jpg" alt="Gauri photo 5" loading="lazy" />
-            </div>
+
+            <div class="hint" id="timelineHint" style="margin-top:10px">Tip: the first item is your top pick.</div>
           </div>
 
           <div class="stage" aria-label="Secret Poem" style="margin-top:14px; display:none" id="poemStage">
@@ -490,19 +471,36 @@
       <h2 id="modalTitle">Yay</h2>
       <p id="modalBody">...</p>
       <div class="btnRow" style="margin-top:10px">
-        <button class="yes" id="closeModal">Close</button>
+        <button class="yes" id="closeModal" type="button">Close</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Keep source ASCII-friendly. Malayalam is stored via unicode escapes.
+    'use strict';
 
-    var PLAYLIST_URL = 'https://open.spotify.com/playlist/6d6GAEhPJOff4i9zWHpgrM?si=OXsFqv2ZQUeNYNqqij1M_Q&pi=myRGPf4nTuOQI';
+    // NOTE: The previous error happened because JavaScript strings contained raw newlines.
+    // Here, all multi-line strings are represented with explicit \n escapes.
 
-    var POEM_ML = "\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40 \u0d35\u0d3f\u0d30\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n\u0d35\u0d38\u0d28\u0d4d\u0d24\u0d02 \u0d2a\u0d4b\u0d32\u0d41\u0d02 \u0d28\u0d3f\u0d36\u0d4d\u0d36\u0d2c\u0d4d\u0d26\u0d2e\u0d3e\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d41.\n\u0d28\u0d3f\u0d28\u0d4d\u0d31\u0d46 \u0d15\u0d23\u0d4d\u0d23\u0d41\u0d15\u0d33\u0d3f\u0d7d \u0d35\u0d46\u0d33\u0d3f\u0d1a\u0d4d\u0d1a\u0d02 \u0d24\u0d46\u0d33\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n\u0d0e\u0d7b \u0d39\u0d43\u0d26\u0d2f\u0d02 \u0d35\u0d34\u0d3f\u0d24\u0d46\u0d31\u0d4d\u0d31\u0d3e\u0d24\u0d46 \u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d3f\u0d32\u0d47\u0d15\u0d4d\u0d15\u0d46\u0d24\u0d4d\u0d24\u0d41\u0d28\u0d4d\u0d28\u0d41.\n\n\u0d1a\u0d41\u0d23\u0d4d\u0d21\u0d41\u0d15\u0d33\u0d41\u0d1f\u0d46 \u0d1a\u0d3f\u0d30\u0d3f\u0d2f\u0d3f\u0d7d \u0d24\u0d47\u0d7b \u0d24\u0d41\u0d33\u0d41\u0d2e\u0d4d\u0d2a\u0d41\u0d02,\n\u0d15\u0d23\u0d4d\u0d23\u0d3f\u0d2e\u0d3f\u0d34\u0d3f\u0d15\u0d33\u0d3f\u0d7d \u0d2e\u0d34\u0d2f\u0d41\u0d1f\u0d46 \u0d2e\u0d43\u0d26\u0d41\u0d24\u0d4d\u0d35\u0d02.\n\u0d28\u0d40 \u0d28\u0d1f\u0d28\u0d4d\u0d28\u0d41 \u0d2a\u0d4b\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d3f\u0d1f\u0d24\u0d4d\u0d24\u0d4d\n\u0d38\u0d4c\u0d28\u0d4d\u0d26\u0d30\u0d4d\u0d2f\u0d02 \u0d24\u0d28\u0d4d\u0d28\u0d46 \u0d35\u0d34\u0d3f\u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d4d \u0d35\u0d23\u0d19\u0d4d\u0d19\u0d41\u0d02.\n\n\u0d0e\u0d7b \u0d2a\u0d4d\u0d30\u0d3f\u0d2f\u0d2e\u0d47,\n\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40-\n\u0d0e\u0d7b\u0d31\u0d46 \u0d26\u0d3f\u0d35\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d28\u0d3f\u0d31\u0d35\u0d41\u0d02,\n\u0d0e\u0d7b \u0d36\u0d4d\u0d35\u0d3e\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d2a\u0d47\u0d30\u0d41\u0d02.";
+    const PLAYLIST_URL = 'https://open.spotify.com/playlist/6d6GAEhPJOff4i9zWHpgrM?si=OXsFqv2ZQUeNYNqqij1M_Q&pi=myRGPf4nTuOQI';
 
-    var POEM_EN = "When you bloom like a red flower,\n" +
+    // Malayalam poem stored as unicode escapes + \n (ASCII-safe)
+    const POEM_ML =
+      "\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40 \u0d35\u0d3f\u0d30\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n" +
+      "\u0d35\u0d38\u0d28\u0d4d\u0d24\u0d02 \u0d2a\u0d4b\u0d32\u0d41\u0d02 \u0d28\u0d3f\u0d36\u0d4d\u0d36\u0d2c\u0d4d\u0d26\u0d2e\u0d3e\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d41.\n" +
+      "\u0d28\u0d3f\u0d28\u0d4d\u0d31\u0d46 \u0d15\u0d23\u0d4d\u0d23\u0d41\u0d15\u0d33\u0d3f\u0d7d \u0d35\u0d46\u0d33\u0d3f\u0d1a\u0d4d\u0d1a\u0d02 \u0d24\u0d46\u0d33\u0d3f\u0d2f\u0d41\u0d2e\u0d4d\u0d2a\u0d4b\u0d7e,\n" +
+      "\u0d0e\u0d7b \u0d39\u0d43\u0d26\u0d2f\u0d02 \u0d35\u0d34\u0d3f\u0d24\u0d46\u0d31\u0d4d\u0d31\u0d3e\u0d24\u0d46 \u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d3f\u0d32\u0d47\u0d15\u0d4d\u0d15\u0d46\u0d24\u0d4d\u0d24\u0d41\u0d28\u0d4d\u0d28\u0d41.\n\n" +
+      "\u0d1a\u0d41\u0d23\u0d4d\u0d21\u0d41\u0d15\u0d33\u0d41\u0d1f\u0d46 \u0d1a\u0d3f\u0d30\u0d3f\u0d2f\u0d3f\u0d7d \u0d24\u0d47\u0d7b \u0d24\u0d41\u0d33\u0d41\u0d2e\u0d4d\u0d2a\u0d41\u0d02,\n" +
+      "\u0d15\u0d23\u0d4d\u0d23\u0d3f\u0d2e\u0d3f\u0d34\u0d3f\u0d15\u0d33\u0d3f\u0d7d \u0d2e\u0d34\u0d2f\u0d41\u0d1f\u0d46 \u0d2e\u0d43\u0d26\u0d41\u0d24\u0d4d\u0d35\u0d02.\n" +
+      "\u0d28\u0d40 \u0d28\u0d1f\u0d28\u0d4d\u0d28\u0d41 \u0d2a\u0d4b\u0d15\u0d41\u0d28\u0d4d\u0d28\u0d3f\u0d1f\u0d24\u0d4d\u0d24\u0d4d\n" +
+      "\u0d38\u0d4c\u0d28\u0d4d\u0d26\u0d30\u0d4d\u0d2f\u0d02 \u0d24\u0d28\u0d4d\u0d28\u0d46 \u0d35\u0d34\u0d3f\u0d28\u0d3f\u0d28\u0d4d\u0d28\u0d4d \u0d35\u0d23\u0d19\u0d4d\u0d19\u0d41\u0d02.\n\n" +
+      "\u0d0e\u0d7b \u0d2a\u0d4d\u0d30\u0d3f\u0d2f\u0d2e\u0d47,\n" +
+      "\u0d1a\u0d41\u0d35\u0d28\u0d4d\u0d28 \u0d2a\u0d42\u0d35\u0d3e\u0d2f\u0d3f \u0d28\u0d40-\n" +
+      "\u0d0e\u0d7b\u0d31\u0d46 \u0d26\u0d3f\u0d35\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d28\u0d3f\u0d31\u0d35\u0d41\u0d02,\n" +
+      "\u0d0e\u0d7b \u0d36\u0d4d\u0d35\u0d3e\u0d38\u0d19\u0d4d\u0d19\u0d33\u0d4d\u0d15\u0d4d\u0d15\u0d4d \u0d2a\u0d47\u0d30\u0d41\u0d02.";
+
+    const POEM_EN =
+      "When you bloom like a red flower,\n" +
       "even spring falls silent.\n" +
       "When light awakens in your eyes,\n" +
       "my heart finds its way to you without losing its path.\n\n" +
@@ -526,12 +524,12 @@
     function closeModal(){ $('modalBack').style.display = 'none'; }
 
     function burstConfetti(){
-      var confetti = $('confetti');
+      const confetti = $('confetti');
       confetti.innerHTML = '';
       confetti.style.display = 'block';
-      var pieces = 120;
-      for(var i=0;i<pieces;i++){
-        var s = document.createElement('span');
+      const pieces = 120;
+      for(let i=0;i<pieces;i++){
+        const s = document.createElement('span');
         s.style.left = (Math.random()*100) + 'vw';
         s.style.top = (-10 - Math.random()*20) + 'svh';
         s.style.animationDuration = (2.8 + Math.random()*2.4) + 's';
@@ -546,10 +544,10 @@
 
     function tinyChime(){
       try{
-        var Ctx = window.AudioContext || window.webkitAudioContext;
-        var ctx = new Ctx();
-        var o = ctx.createOscillator();
-        var g = ctx.createGain();
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new Ctx();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
         o.type = 'triangle';
         o.frequency.value = 660;
         g.gain.value = 0.0001;
@@ -559,20 +557,20 @@
         o.frequency.exponentialRampToValueAtTime(990, ctx.currentTime + 0.12);
         g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
         o.stop(ctx.currentTime + 0.55);
-      }catch(e){ }
+      }catch(e){ /* ignore */ }
     }
 
     // Hearts
-    var hearts = $('hearts');
-    var heartsOn = true;
-    var heartTimer = null;
+    const hearts = $('hearts');
+    let heartsOn = true;
+    let heartTimer = null;
 
     function spawnHeart(){
       if(!heartsOn) return;
-      var h = document.createElement('div');
+      const h = document.createElement('div');
       h.className = 'heart';
-      var left = Math.random()*100;
-      var size = 10 + Math.random()*14;
+      const left = Math.random()*100;
+      const size = 10 + Math.random()*14;
       h.style.left = left + 'vw';
       h.style.bottom = '-20px';
       h.style.width = size + 'px';
@@ -588,21 +586,120 @@
       heartTimer = setInterval(spawnHeart, 220);
     }
 
+    // (5) Typewriter reveal
+    function typewriter(el, text, speed){
+      if(!el) return;
+      el.textContent = '';
+      let i = 0;
+      function step(){
+        i++;
+        el.textContent = text.slice(0, i);
+        if(i < text.length){
+          const ch = text.charAt(i);
+          const jitter = (ch === '\n') ? speed * 2.2 : speed * (0.85 + Math.random()*0.4);
+          setTimeout(step, jitter);
+        }
+      }
+      step();
+    }
+
+    // (2) Time since yes
+    let yesTimer = null;
+    function pad2(n){ return (n < 10 ? '0' : '') + n; }
+    function startYesTimer(startMs){
+      if(yesTimer) clearInterval(yesTimer);
+      function tick(){
+        const diff = Math.max(0, Date.now() - startMs);
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        $('timeSinceYes').textContent = 'Time since yes: ' + pad2(h) + ':' + pad2(m) + ':' + pad2(s);
+      }
+      tick();
+      yesTimer = setInterval(tick, 1000);
+    }
+
+    // (2) Soft music toggle (no autoplay)
+    let audioCtx = null;
+    let musicOn = false;
+    let musicNodes = null;
+
+    function startSoftMusic(){
+      try{
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        audioCtx = audioCtx || new Ctx();
+
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+        osc1.frequency.value = 220;
+        osc2.frequency.value = 277.18;
+
+        filter.type = 'lowpass';
+        filter.frequency.value = 900;
+
+        gain.gain.value = 0.0001;
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+
+        gain.gain.exponentialRampToValueAtTime(0.06, audioCtx.currentTime + 0.8);
+
+        musicNodes = { osc1: osc1, osc2: osc2, gain: gain };
+        musicOn = true;
+        $('musicToggle').textContent = 'Pause music';
+      }catch(e){
+        openModal('Music note', "Your browser blocked audio. That's okay — the playlist is still there.");
+      }
+    }
+
+    function stopSoftMusic(){
+      try{
+        if(!musicNodes || !audioCtx) return;
+        musicNodes.gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.25);
+        setTimeout(function(){
+          try{ musicNodes.osc1.stop(); }catch(e){}
+          try{ musicNodes.osc2.stop(); }catch(e){}
+          musicNodes = null;
+          musicOn = false;
+          $('musicToggle').textContent = 'Play something soft';
+        }, 320);
+      }catch(e){
+        musicNodes = null;
+        musicOn = false;
+        $('musicToggle').textContent = 'Play something soft';
+      }
+    }
+
     function initStatic(){
       $('playlistBtn').href = PLAYLIST_URL;
-      // Hide playlist until she says Yes.
       $('playlistBtn').style.display = 'none';
 
-      // Poem text (Malayalam + English translation)
-      $('poemBlock').textContent = POEM_ML + "\n\n--- English translation ---\n" + POEM_EN;
+      // Prepare poem for typewriter reveal
+      window.__FULL_POEM__ = POEM_ML + "\n\n--- English translation ---\n" + POEM_EN;
+      $('poemBlock').textContent = '';
+
+      // Tools hidden until Yes
+      $('afterYesTools').style.display = 'none';
+      $('musicToggle').textContent = 'Play something soft';
+      $('timeSinceYes').textContent = 'Time since yes: 00:00:00';
     }
 
     // Intro gate
-    var introYesBtn = $('introYesBtn');
-    var introNoBtn = $('introNoBtn');
-    var introStage = $('introStage');
-    var mainContent = $('mainContent');
-    var card = $('card');
+    const introYesBtn = $('introYesBtn');
+    const introNoBtn = $('introNoBtn');
+    const introStage = $('introStage');
+    const mainContent = $('mainContent');
+    const card = $('card');
 
     function openMain(){
       card.classList.add('unfurl');
@@ -610,7 +707,7 @@
       $('lead').textContent = 'Okay - here it is.';
       setTimeout(function(){
         introStage.style.display = 'none';
-        var q = document.querySelector('[aria-label="Question"]');
+        const q = document.querySelector('[aria-label="Question"]');
         if(q) q.scrollIntoView({behavior:'smooth', block:'start'});
       }, 520);
     }
@@ -634,9 +731,9 @@
     $('modalBack').addEventListener('click', function(e){ if(e.target === $('modalBack')) closeModal(); });
 
     // No button dodges
-    var noBtn = $('noBtn');
-    var hint = $('hint');
-    var noPhrases = [
+    const noBtn = $('noBtn');
+    const hint = $('hint');
+    const noPhrases = [
       'Are you sure?',
       'Wait - misclick?',
       'That button is suspicious...',
@@ -646,17 +743,17 @@
       'Plot twist: you meant YES',
       'I respect your choice (but I will try again)'
     ];
-    var noCount = 0;
+    let noCount = 0;
 
     function dodgeNo(){
-      var stage = document.querySelector('[aria-label="Question"]');
-      var rect = stage.getBoundingClientRect();
-      var btnRect = noBtn.getBoundingClientRect();
-      var padding = 12;
-      var maxX = rect.width - btnRect.width - padding;
-      var maxY = rect.height - btnRect.height - padding;
-      var x = Math.max(padding, Math.random()*Math.max(10, maxX));
-      var y = Math.max(padding, Math.random()*Math.max(10, maxY));
+      const stage = document.querySelector('[aria-label="Question"]');
+      const rect = stage.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+      const padding = 12;
+      const maxX = rect.width - btnRect.width - padding;
+      const maxY = rect.height - btnRect.height - padding;
+      const x = Math.max(padding, Math.random()*Math.max(10, maxX));
+      const y = Math.max(padding, Math.random()*Math.max(10, maxY));
 
       noBtn.style.position = 'absolute';
       noBtn.style.left = x + 'px';
@@ -673,30 +770,42 @@
       openModal('Aww', 'No worries. I am still grateful I got to ask.');
     });
 
-    // Yes celebration + poem unlock + show playlist button
+    $('musicToggle').addEventListener('click', function(){
+      if(!musicOn) startSoftMusic();
+      else stopSoftMusic();
+    });
+
+    // Yes celebration + poem unlock + show playlist + timer + tools
     $('yesBtn').addEventListener('click', function(){
       document.body.classList.add('celebrate');
       burstConfetti();
       tinyChime();
 
-      // Reveal playlist button only after Yes
       $('playlistBtn').style.display = 'inline-flex';
+      $('pill').textContent = 'playlist unlocked';
 
-      var poemStage = $('poemStage');
+      $('afterYesTools').style.display = 'flex';
+
+      const started = Date.now();
+      try{ localStorage.setItem('valentine_yes_time', String(started)); }catch(e){}
+      startYesTimer(started);
+
+      const poemStage = $('poemStage');
       poemStage.style.display = 'block';
       poemStage.scrollIntoView({behavior:'smooth', block:'center'});
+      typewriter($('poemBlock'), (window.__FULL_POEM__ || ''), 18);
 
-      openModal('YAY!!', 'It is a date. Playlist is unlocked - click Open playlist.');
+      openModal('YAY!!', 'It is a date. Playlist is unlocked — and there is a secret poem too.');
     });
 
     // Quiz
-    var quizData = [
+    const quizData = [
       { q: 'The first time we kissed', options: ['The flagpole area', 'Right outside the gym', 'In acad block'], answer: 0 },
       { q: 'The first time you told me you loved me', options: ['the flagpole area', 'Right outside the gym', 'In acad block'], answer: 1 }
     ];
 
-    var quizEl = $('quiz');
-    var qi = 0;
+    const quizEl = $('quiz');
+    let qi = 0;
 
     function renderQuiz(){
       if(qi >= quizData.length){
@@ -704,44 +813,43 @@
         return;
       }
 
-      var item = quizData[qi];
+      const item = quizData[qi];
       quizEl.innerHTML = '';
 
-      var q = document.createElement('div');
+      const q = document.createElement('div');
       q.className = 'big';
       q.textContent = item.q;
       quizEl.appendChild(q);
 
-      for(var i=0;i<item.options.length;i++){
-        (function(opt, idx){
-          var b = document.createElement('button');
-          b.className = 'ghost';
-          b.style.marginTop = '10px';
-          b.textContent = opt;
-          b.addEventListener('click', function(){
-            if(idx === item.answer){
-              burstConfetti();
-              qi += 1;
-              renderQuiz();
-            } else {
-              b.textContent = 'Try again';
-            }
-          });
-          quizEl.appendChild(b);
-        })(item.options[i], i);
+      for(let i=0;i<item.options.length;i++){
+        const opt = item.options[i];
+        const idx = i;
+        const b = document.createElement('button');
+        b.className = 'ghost';
+        b.style.marginTop = '10px';
+        b.type = 'button';
+        b.textContent = opt;
+        b.addEventListener('click', function(){
+          if(idx === item.answer){
+            burstConfetti();
+            qi += 1;
+            renderQuiz();
+          } else {
+            b.textContent = 'Try again';
+          }
+        });
+        quizEl.appendChild(b);
       }
     }
 
-    // Photos are embedded (no upload UI).
-
-    // Timeline preference (drag + buttons) (drag + buttons)
-    var timeline = $('timeline');
-    var draggingEl = null;
+    // Timeline preference (drag + buttons)
+    const timeline = $('timeline');
+    let draggingEl = null;
 
     function getTimelineOrder(){
-      var items = timeline.querySelectorAll('.timelineItem');
-      var out = [];
-      for(var i=0;i<items.length;i++) out.push(items[i].getAttribute('data-key'));
+      const items = timeline.querySelectorAll('.timelineItem');
+      const out = [];
+      for(let i=0;i<items.length;i++) out.push(items[i].getAttribute('data-key'));
       return out;
     }
 
@@ -750,28 +858,28 @@
     }
 
     function applySavedTimelineOrder(){
-      var saved = null;
+      let saved = null;
       try{ saved = JSON.parse(localStorage.getItem('valentine_timeline_order') || 'null'); }catch(e){ saved = null; }
       if(!saved || !saved.length) return;
 
-      var map = {};
-      var children = timeline.children;
-      for(var i=0;i<children.length;i++) map[children[i].getAttribute('data-key')] = children[i];
+      const map = {};
+      const children = timeline.children;
+      for(let i=0;i<children.length;i++) map[children[i].getAttribute('data-key')] = children[i];
 
-      var frag = document.createDocumentFragment();
-      for(var j=0;j<saved.length;j++){
-        if(map[saved[j]]) frag.appendChild(map[saved[j]]);
-      }
-      var kids = Array.prototype.slice.call(timeline.children);
-      for(var k=0;k<kids.length;k++){
-        var key = kids[k].getAttribute('data-key');
+      const frag = document.createDocumentFragment();
+      for(let j=0;j<saved.length;j++) if(map[saved[j]]) frag.appendChild(map[saved[j]]);
+
+      const kids = Array.prototype.slice.call(timeline.children);
+      for(let k=0;k<kids.length;k++){
+        const key = kids[k].getAttribute('data-key');
         if(saved.indexOf(key) === -1) frag.appendChild(kids[k]);
       }
+
       timeline.appendChild(frag);
     }
 
     function moveItem(li, dir){
-      var sib = dir === 'up' ? li.previousElementSibling : li.nextElementSibling;
+      const sib = dir === 'up' ? li.previousElementSibling : li.nextElementSibling;
       if(!sib) return;
       if(dir === 'up') timeline.insertBefore(li, sib);
       else timeline.insertBefore(sib, li);
@@ -779,18 +887,18 @@
     }
 
     timeline.addEventListener('click', function(e){
-      var t = e.target;
+      const t = e.target;
       if(!t || !t.classList || !t.classList.contains('tBtn')) return;
       e.preventDefault();
       e.stopPropagation();
-      var li = t;
+      let li = t;
       while(li && li.classList && !li.classList.contains('timelineItem')) li = li.parentNode;
       if(!li) return;
       moveItem(li, t.getAttribute('data-dir'));
     });
 
     timeline.addEventListener('dragstart', function(e){
-      var li = e.target;
+      let li = e.target;
       while(li && li.classList && !li.classList.contains('timelineItem')) li = li.parentNode;
       if(!li) return;
       draggingEl = li;
@@ -808,25 +916,43 @@
     timeline.addEventListener('dragover', function(e){
       e.preventDefault();
       if(!draggingEl) return;
-      var after = getDragAfterElement(timeline, e.clientY);
+      const after = getDragAfterElement(timeline, e.clientY);
       if(after == null) timeline.appendChild(draggingEl);
       else timeline.insertBefore(draggingEl, after);
     });
 
     function getDragAfterElement(container, y){
-      var els = container.querySelectorAll('.timelineItem');
-      var closest = { offset: -Infinity, element: null };
-      for(var i=0;i<els.length;i++){
-        var child = els[i];
+      const els = container.querySelectorAll('.timelineItem');
+      let closest = { offset: -Infinity, element: null };
+      for(let i=0;i<els.length;i++){
+        const child = els[i];
         if(child === draggingEl) continue;
-        var box = child.getBoundingClientRect();
-        var offset = y - box.top - box.height / 2;
-        if(offset < 0 && offset > closest.offset){
-          closest = { offset: offset, element: child };
-        }
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if(offset < 0 && offset > closest.offset) closest = { offset: offset, element: child };
       }
       return closest.element;
     }
+
+    // (6) Lock plan
+    function prettyKey(k){
+      const map = {
+        sunder: 'Sunder Nursery',
+        khan: 'A meal in Khan',
+        rage: 'A rage room in Delhi',
+        movie: 'Snuggling and watching a movie',
+        old: 'A historical walk in Old Delhi'
+      };
+      return map[k] || k;
+    }
+
+    $('lockPlanBtn').addEventListener('click', function(){
+      persistTimelineOrder();
+      try{ localStorage.setItem('valentine_plan_locked', '1'); }catch(e){}
+      $('lockPlanHint').textContent = 'Locked. (Saved locally on this device.)';
+      const order = getTimelineOrder().map(prettyKey);
+      openModal('Plan locked 💌', 'Top preference first:\n\n' + order.join('\n'));
+    });
 
     // Reset
     $('reset').addEventListener('click', function(e){
@@ -836,6 +962,13 @@
       document.body.classList.remove('celebrate');
 
       $('playlistBtn').style.display = 'none';
+      $('afterYesTools').style.display = 'none';
+      try{ localStorage.removeItem('valentine_yes_time'); }catch(err){}
+      if(yesTimer) clearInterval(yesTimer);
+      yesTimer = null;
+      stopSoftMusic();
+
+      $('pill').textContent = 'playlist ready';
 
       noBtn.style.position = 'relative';
       noBtn.style.left = 'auto';
@@ -844,12 +977,12 @@
       noCount = 0;
       hint.textContent = '(Tip: the No button is mischievous.)';
 
-      // Photo grid is static; nothing to reset here.
-
       qi = 0;
       renderQuiz();
 
       try{ localStorage.removeItem('valentine_timeline_order'); }catch(err){}
+      try{ localStorage.removeItem('valentine_plan_locked'); }catch(err){}
+      $('lockPlanHint').textContent = '(This only saves in this browser.)';
 
       introStage.style.display = 'block';
       mainContent.classList.add('hidden');
@@ -882,9 +1015,13 @@
       assert($('timeline').querySelectorAll('.timelineItem').length === 5, 'timeline has 5 items');
       assert(!!$('playlistBtn') && $('playlistBtn').getAttribute('href') !== '', 'playlist button has href');
       assert($('playlistBtn').style.display === 'none', 'playlist button starts hidden');
+      assert(!!$('afterYesTools'), 'afterYesTools exists');
+      assert(!!$('timeSinceYes'), 'timeSinceYes exists');
+      assert(!!$('musicToggle'), 'musicToggle exists');
+      assert(!!$('lockPlanBtn'), 'lockPlanBtn exists');
       assert(typeof POEM_ML === 'string' && POEM_ML.length > 20, 'Malayalam poem is present');
       assert(typeof POEM_EN === 'string' && POEM_EN.indexOf('red flower') !== -1, 'English translation is present');
-      assert($('photoGrid').querySelectorAll('img').length === 5, 'photo grid has 5 images');
+      assert(typewriter && typeof typewriter === 'function', 'typewriter function exists');
       console.log('Basic tests passed');
     }
 
@@ -894,7 +1031,21 @@
     applySavedTimelineOrder();
     renderQuiz();
     initStatic();
+
+    // If she re-opens after saying yes earlier, show timer/tools (no autoplay music)
+    try{
+      const t = localStorage.getItem('valentine_yes_time');
+      if(t){
+        $('afterYesTools').style.display = 'flex';
+        startYesTimer(parseInt(t, 10));
+      }
+      if(localStorage.getItem('valentine_plan_locked') === '1'){
+        $('lockPlanHint').textContent = 'Locked. (Saved locally on this device.)';
+      }
+    }catch(e){ /* ignore */ }
+
     runTests();
   </script>
 </body>
 </html>
+
